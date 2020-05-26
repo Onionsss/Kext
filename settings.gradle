@@ -1,0 +1,3 @@
+rootProject.name='Ext'
+include ':app'
+include ':kext'
