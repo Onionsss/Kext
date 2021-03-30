@@ -17,6 +17,7 @@ import java.text.DecimalFormat
 fun Double.m2(): String {
     val df = DecimalFormat("#.00")
     val d = df.format(this)
+
     return when {
         d == ".00" -> "0.00"
         d.substring(0, 1) == "." -> "0$d"
@@ -37,4 +38,8 @@ fun Float.m2(): String{
 fun BigDecimal.m2(): String{
     val format = DecimalFormat("0.00")
     return format.format(this)
+}
+
+fun BigDecimal.sub(p2: BigDecimal): BigDecimal{
+    return this.subtract(p2)
 }

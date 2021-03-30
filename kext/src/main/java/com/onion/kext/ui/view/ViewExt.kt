@@ -1,10 +1,17 @@
 package com.onion.kext.ui.view
 
 import android.content.Context
+import android.content.res.Resources
+import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.webkit.WebChromeClient
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Checkable
 import android.widget.EditText
+import android.widget.ProgressBar
 import java.util.*
 
 /**
@@ -31,6 +38,10 @@ fun View.show(): View{
 fun View.hide(): View {
     this.visibility = View.INVISIBLE
     return this
+}
+
+fun View.click(){
+
 }
 
 fun Checkable.check(): Checkable{
@@ -75,3 +86,37 @@ fun EditText.openKeyBoard(ctx: Context){
     },200)
 }
 
+/**
+ * webview
+ * webview Setting
+ */
+fun WebView.setting(progressBar: ProgressBar){
+    val settings = this.settings
+    settings.javaScriptEnabled = true
+    settings.domStorageEnabled = true
+    settings.javaScriptCanOpenWindowsAutomatically = true
+    settings.defaultTextEncodingName = "UTF-8"
+    settings.setSupportZoom(false)
+    settings.cacheMode = WebSettings.LOAD_NO_CACHE
+    settings.pluginState = WebSettings.PluginState.ON
+    this.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+
+    this.webChromeClient = object : WebChromeClient() {
+        override fun onProgressChanged(view: WebView, newProgress: Int) {
+            super.onProgressChanged(view, newProgress)
+            if (newProgress == 100) {
+                progressBar.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.VISIBLE
+                progressBar.progress = newProgress
+            }
+        }
+
+    }
+
+    this.webViewClient = object : WebViewClient() {
+        override fun onPageFinished(view: WebView, url: String) {
+            super.onPageFinished(view, url)
+        }
+    }
+}
